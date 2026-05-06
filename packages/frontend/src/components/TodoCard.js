@@ -106,8 +106,13 @@ function TodoCard({ todo, onToggle, onEdit, onDelete, isLoading }) {
     );
   }
 
+  // Overdue visual indicator: purple border, icon, label, accessible
+  const isOverdue = todo.overdue;
   return (
-    <div className={`todo-card ${todo.completed ? 'completed' : ''}`}>
+    <div
+      className={`todo-card${todo.completed ? ' completed' : ''}${isOverdue ? ' overdue' : ''}`}
+      aria-label={`Todo: ${todo.title}${todo.dueDate ? ', due ' + formatDate(todo.dueDate) : ''}`}
+    >
       <input
         type="checkbox"
         checked={todo.completed === 1}
@@ -121,7 +126,13 @@ function TodoCard({ todo, onToggle, onEdit, onDelete, isLoading }) {
         <h3 className="todo-title">{todo.title}</h3>
         {todo.dueDate && (
           <p className="todo-due-date">
-            Due: {formatDate(todo.dueDate)}
+            Due: {formatDate(todo.dueDate)}{' '}
+            {isOverdue && (
+              <span className="overdue-indicator" aria-label="Overdue" title="Overdue">
+                <span className="overdue-icon" role="img" aria-label="Warning">⚠️</span>
+                <span className="overdue-label">Overdue</span>
+              </span>
+            )}
           </p>
         )}
       </div>

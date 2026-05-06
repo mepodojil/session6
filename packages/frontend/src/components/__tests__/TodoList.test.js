@@ -59,4 +59,23 @@ describe('TodoList Component', () => {
     expect(screen.getAllByLabelText(/Edit/)).toHaveLength(2);
     expect(screen.getAllByLabelText(/Delete/)).toHaveLength(2);
   });
+
+    it('should show overdue count summary when there are overdue todos', () => {
+      const overdueTodos = [
+        { id: 1, title: 'Overdue 1', overdue: true, completed: 0 },
+        { id: 2, title: 'Overdue 2', overdue: true, completed: 0 },
+        { id: 3, title: 'Not Overdue', overdue: false, completed: 0 }
+      ];
+      render(<TodoList todos={overdueTodos} {...mockHandlers} isLoading={false} />);
+      expect(screen.getByText('2 overdue')).toBeInTheDocument();
+    });
+
+    it('should not show overdue count summary when there are no overdue todos', () => {
+      const todos = [
+        { id: 1, title: 'Not Overdue', overdue: false, completed: 0 },
+        { id: 2, title: 'Done', overdue: false, completed: 1 }
+      ];
+      render(<TodoList todos={todos} {...mockHandlers} isLoading={false} />);
+      expect(screen.queryByText(/overdue/)).not.toBeInTheDocument();
+    });
 });

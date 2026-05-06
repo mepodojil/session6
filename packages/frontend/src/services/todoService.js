@@ -16,7 +16,19 @@ class TodoService {
       if (!response.ok) {
         throw new Error(`Failed to fetch todos: ${response.statusText}`);
       }
-      return await response.json();
+        const todos = await response.json();
+        // Add overdue field to each todo
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        return todos.map(todo => {
+          let overdue = false;
+          if (!todo.completed && todo.dueDate) {
+            const due = new Date(todo.dueDate);
+            due.setHours(0,0,0,0);
+            overdue = due < today;
+          }
+          return { ...todo, overdue };
+        });
     } catch (error) {
       console.error('Error fetching todos:', error);
       throw error;

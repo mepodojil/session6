@@ -9,6 +9,21 @@ class TodoService {
   }
 
   /**
+   * Determine if a todo is overdue (not completed, dueDate < today)
+   * @param {Object} todo - Todo object
+   * @returns {boolean}
+   */
+  static isOverdue(todo) {
+    if (!todo || todo.completed || !todo.dueDate) return false;
+    const today = new Date();
+    const due = new Date(todo.dueDate);
+    // Compare only date part (ignore time)
+    today.setHours(0,0,0,0);
+    due.setHours(0,0,0,0);
+    return due < today;
+  }
+
+  /**
    * Get all todos ordered by creation date (newest first)
    * @returns {Array} Array of todo objects
    */

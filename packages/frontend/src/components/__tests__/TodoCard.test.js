@@ -59,6 +59,24 @@ describe('TodoCard Component', () => {
     expect(editButton).toBeInTheDocument();
   });
 
+    it('should show overdue indicator when todo is overdue', () => {
+      const overdueTodo = {
+        ...mockTodo,
+        overdue: true,
+        dueDate: '2020-01-01',
+        completed: 0
+      };
+      render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      // There may be multiple 'Overdue' elements (label, card aria-label)
+      const overdueLabels = screen.getAllByText(/Overdue/i);
+      expect(overdueLabels.length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByLabelText('Overdue')).toBeInTheDocument();
+      expect(screen.getByRole('img', { name: /Warning/ })).toBeInTheDocument();
+      // Card should have overdue class
+      const card = screen.getByLabelText(/overdue/i);
+      expect(card.className).toMatch(/overdue/);
+    });
+
   it('should show delete button', () => {
     render(<TodoCard todo={mockTodo} {...mockHandlers} isLoading={false} />);
     

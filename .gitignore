@@ -20,3 +20,21 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Additional patterns for monorepo, backend, frontend
+dist/
+build/
+*.log
+.env*
+.idea/
+.vscode/
+*.tmp
+*.swp
+# Backend
+/packages/backend/dist
+/packages/backend/*.log
+# Frontend
+/packages/frontend/dist
+/packages/frontend/*.log
+# Universal
+Thumbs.db

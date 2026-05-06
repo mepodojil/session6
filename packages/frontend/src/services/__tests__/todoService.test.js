@@ -21,10 +21,30 @@ describe('TodoService', () => {
         json: async () => mockTodos
       });
 
-      const result = await TodoService.getAllTodos();
+        const result = await TodoService.getAllTodos();
 
-      expect(global.fetch).toHaveBeenCalledWith('/api/todos');
-      expect(result).toEqual(mockTodos);
+        expect(global.fetch).toHaveBeenCalledWith('/api/todos');
+        // Overdue field should be present and correct
+        expect(result[0].overdue).toBe(false);
+        expect(result[1].overdue).toBe(false);
+      });
+
+      it('should mark overdue todos correctly', async () => {
+        const today = new Date();
+        const pastDate = new Date(today.getTime() - 86400000).toISOString().split('T')[0];
+        const mockTodos = [
+          { id: 1, title: 'Past Due', completed: 0, dueDate: pastDate },
+          { id: 2, title: 'Future', completed: 0, dueDate: '2999-01-01' },
+          { id: 3, title: 'Done', completed: 1, dueDate: pastDate }
+        ];
+        global.fetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockTodos
+        });
+        const result = await TodoService.getAllTodos();
+        expect(result[0].overdue).toBe(true);
+        expect(result[1].overdue).toBe(false);
+        expect(result[2].overdue).toBe(false);
     });
 
     it('should throw error when fetch fails', async () => {
