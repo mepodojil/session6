@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **I. Test-First**: Test tasks are included for every new unit and integration point.
+- [ ] **II. Clean Code**: No repeated logic; naming conventions followed; ESLint passes.
+- [ ] **III. Monorepo Architecture**: Changes stay within `packages/frontend` or `packages/backend`; no cross-package imports.
+- [ ] **IV. Minimal Feature Set**: Feature maps to a user story in `docs/functional-requirements.md`; no out-of-scope additions.
+- [ ] **V. Consistent UI**: UI changes follow the design system in `docs/ui-guidelines.md`; dark/light mode preserved.
 
 ## Project Structure
 
