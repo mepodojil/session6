@@ -65,10 +65,10 @@ confirming the displayed count matches the number of incomplete, past-due items.
 - **FR-002**: The system MUST NOT display an overdue indicator on completed todo items, regardless of their due date.
 - **FR-003**: The system MUST NOT display an overdue indicator on todos with no due date.
 - **FR-004**: The system MUST NOT display an overdue indicator on todos whose due date is today or in the future.
-- **FR-005**: The overdue visual treatment MUST be visually distinguishable from both the default incomplete state and the completed (strikethrough) state.
+- **FR-005**: The overdue visual treatment MUST use a combination of a card-level color change (accent/purple) AND a text label or icon placed inline next to the due date (e.g., `⚠ May 1, 2026` or `May 1, 2026 · Overdue`), ensuring status is communicated through more than color alone (accessibility). The treatment MUST be visually distinguishable from both the default incomplete state and the completed (strikethrough) state. No card layout restructuring is required.
 - **FR-006**: The overdue indicator MUST update in the current view when a user marks an overdue todo as complete (without requiring a page reload).
 - **FR-007**: The overdue indicator MUST update in the current view when a user edits an overdue todo's due date to a future date.
-- **FR-008**: The system MUST display a summary count of currently overdue todos when one or more overdue items exist.
+- **FR-008**: The system MUST display a summary count of currently overdue todos as a status line between the input form and the todo list when one or more overdue items exist.
 - **FR-009**: The overdue count summary MUST update dynamically when todo completion status or due dates change.
 
 ### Key Entities
@@ -84,11 +84,20 @@ confirming the displayed count matches the number of incomplete, past-due items.
 - **SC-003**: The overdue count summary matches the true count of overdue items at all times, updating within one rendering cycle of any status or date change.
 - **SC-004**: The feature introduces no visual regression to the existing UI for non-overdue todos (completed, in-progress, and undated items retain their current appearance).
 
+## Clarifications
+
+### Session 2026-05-06
+
+- Q: What visual treatment should be used for the overdue indicator? → A: Combination — color change on the card + icon or text label near the due date
+- Q: Which color token should be used for the overdue state? → A: Use the existing `accent` color (purple) — distinct from the `danger` color reserved for delete actions
+- Q: Where should the overdue indicator appear on the todo card? → A: Inline next to the due date text (e.g., `⚠ May 1, 2026` or `May 1, 2026 · Overdue`)
+- Q: Where should the overdue summary count be displayed? → A: As a status line between the input form and the todo list (not in the page header or inside the list itself).
+
 ## Assumptions
 
 - Overdue state is a derived, display-only property — no new fields are stored in the backend. The due date and completion status already persisted are sufficient.
 - "Overdue" means the due date is strictly before today's local calendar date (not time-of-day precise).
-- The existing dark mode and light mode color palettes both support adding a distinct overdue color without redesigning the UI (assumed based on the existing Halloween-themed design system with a danger color already defined).
-- The overdue summary count is displayed in the list header area, consistent with the existing single-column layout.
+- The overdue visual treatment uses the existing `accent` color token (purple: `#9d4edd` light / `#bb86fc` dark) to distinguish it from the `danger` color (red) reserved for delete actions. No new color tokens are required.
+- The overdue summary count is displayed as a status line between the input form and the todo list, not in the page header or inside the list itself.
 - No notification, alert, or email is sent for overdue items — this is a visual-only feature scoped to the list view.
 - Sorting or filtering by overdue status is out of scope for this feature.
